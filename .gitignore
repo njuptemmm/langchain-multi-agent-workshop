@@ -5,8 +5,9 @@
 .env.*
 !.env.example
 
-# 本地笔记中含 OSS 账号、AccessKey 等，请勿上传
-notebooks/notes.md
+# 教程 Notebook（仅本地学习，不纳入版本库）
+notebooks/
+*.ipynb
 
 # 密钥、证书
 *.pem
@@ -49,8 +50,7 @@ resources/*.db
 # Jupyter
 # =========================
 .ipynb_checkpoints/
-# 建议提交前清除 notebook 输出（输出中可能含 API Key）
-# jupyter nbconvert --clear-output --inplace notebooks/**/*.ipynb
+.jupyter/
 
 # =========================
 # LangGraph / LangSmith 本地

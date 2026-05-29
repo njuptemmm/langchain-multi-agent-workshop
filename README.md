@@ -1,6 +1,6 @@
-# LangChain 全家桶实战 — AI 私厨 & 健身营养分析
+# LangChain Multi-Agent Workshop — AI 私厨 & 健身营养分析
 
-基于 [LangChain](https://python.langchain.com/) 与 [LangGraph](https://langchain-ai.github.io/langgraph/) 的实战项目，包含教程 Notebook 与可运行的 Web 应用。
+基于 [LangChain](https://python.langchain.com/) 与 [LangGraph](https://langchain-ai.github.io/langgraph/) 的多 Agent Web 应用。
 
 - **AI 私人厨师**：上传食材图片，联网搜索并推荐食谱
 - **健身营养分析**：识别餐食，统计热量、蛋白质、碳水、脂肪、膳食纤维、钠
@@ -18,7 +18,6 @@
 │   │   └── oss.py                # OSS 图片上传签名
 │   ├── static/                   # 前端静态页
 │   └── main.py                   # FastAPI 入口
-├── notebooks/                    # 教程 Jupyter Notebook
 ├── db/                           # SQLite 会话库（本地生成，已 gitignore）
 ├── langgraph.json                # LangSmith / langgraph dev 配置
 ├── pyproject.toml
@@ -35,8 +34,8 @@
 ### 1. 克隆并安装依赖
 
 ```bash
-git clone <your-repo-url>
-cd jupyter
+git clone https://github.com/njuptemmm/langchain-multi-agent-workshop.git
+cd langchain-multi-agent-workshop
 
 uv sync
 # 或: python -m venv .venv && pip install -e .
@@ -56,7 +55,6 @@ cp .env.example .env
 | `TAVILY_API_KEY` | 网页搜索工具 | 是 |
 | `OSS_*` | 餐食/食材图片上传 | 上传图片时需要 |
 | `LANGSMITH_*` | Agent 调试追踪 | 可选 |
-| `DEEPSEEK_API_KEY` | Notebook 中 DeepSeek 实验 | 可选 |
 
 ### 3. 启动 Web 服务
 
@@ -116,25 +114,11 @@ uv run langgraph dev
 }
 ```
 
-## 教程 Notebook
-
-`notebooks/` 目录为 LangChain 入门教程，建议按顺序学习：
-
-1. `第1章-AI通识与基础/`
-2. `第2章-LangChain入门/`（2.1 → 2.7 实战）
-
-## 推送到 GitHub 前请注意
+## 安全说明
 
 1. **切勿提交 `.env`**，已写入 `.gitignore`
-2. **复制 `.env.example` 作为模板**，不要上传真实密钥
-3. **`notebooks/notes.md` 已忽略**（内含 OSS 账号等敏感信息）
-4. **清除 Notebook 输出后再提交**（部分 cell 输出可能包含 API Key）：
-
-   ```bash
-   jupyter nbconvert --clear-output --inplace notebooks/**/*.ipynb
-   ```
-
-5. 若密钥曾误提交，请立即在对应平台**轮换密钥**，并使用 `git filter-repo` 或 BFG 清理历史记录
+2. **使用 `.env.example` 作为模板**，不要上传真实密钥
+3. 若密钥曾误提交，请立即在对应平台**轮换密钥**，并清理 Git 历史记录
 
 ## 技术栈
 
