@@ -1,0 +1,8 @@
+{
+    "dependencies": ["."],
+    "graphs": {
+        "chief_agent": "./app/agents/personal_chef.py:agent",
+        "fitness_nutrition_agent": "./app/agents/fitness_nutrition.py:agent"
+    },
+    "env": ".env"
+}

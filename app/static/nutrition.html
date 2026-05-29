@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健身营养分析</title>
+  <link rel="stylesheet" href="/_next/static/chunks/c13dc4b283c0c8d9.css" />
+  <link rel="icon" href="/favicon.ico" sizes="256x256" type="image/x-icon" />
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in { animation: fade-in 0.3s ease-out; }
+    .prose-chat { font-size: 0.9375rem; line-height: 1.625; color: #1e2939; }
+    .prose-chat p { margin: 0.5em 0; }
+    .prose-chat h1, .prose-chat h2, .prose-chat h3 { font-weight: 600; margin: 1em 0 0.5em; }
+    .prose-chat ul, .prose-chat ol { margin: 0.5em 0; padding-left: 1.25em; }
+    .prose-chat table { width: 100%; border-collapse: collapse; margin: 0.75em 0; font-size: 0.875rem; }
+    .prose-chat th, .prose-chat td { border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem; text-align: left; }
+    .prose-chat th { background: #fff7ed; font-weight: 600; }
+    .prose-chat tr:nth-child(even) td { background: #fafafa; }
+    .prose-chat code { background: #f3f4f6; padding: 0.1em 0.35em; border-radius: 0.25rem; font-size: 0.875em; }
+    .prose-chat strong { font-weight: 600; }
+    .mode-link {
+      font-size: 0.875rem;
+      color: #6a7282;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .mode-link:hover { color: #f05100; }
+  </style>
+</head>
+<body class="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable antialiased">
+  <div class="min-h-screen relative">
+    <!-- 背景（与私厨一致） -->
+    <div class="fixed inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50"></div>
+    <div class="fixed inset-0 opacity-30">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+      <div class="absolute top-40 right-10 w-96 h-96 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style="animation-delay:1s"></div>
+      <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-red-100 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style="animation-delay:2s"></div>
+    </div>
+
+    <!-- 顶栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 p-4">
+      <div class="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white" aria-hidden="true">
+              <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path>
+              <path d="M10 2c1 .5 2 2 2 5"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">健身营养分析</h1>
+            <p class="text-sm text-gray-500">识别餐食，统计热量、蛋白质、碳水、脂肪、纤维、钠</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="/" class="mode-link hidden sm:inline">← 私厨模式</a>
+          <button id="newSession" class="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="M12 5v14"></path>
+            </svg>
+            <span>新建会话</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 消息区 -->
+    <div class="relative flex flex-col min-h-screen max-w-4xl mx-auto px-4 pt-24 pb-24">
+      <div class="flex-1 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50 overflow-hidden flex flex-col">
+        <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4" style="min-height: 420px;">
+          <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-400 mt-3">
+            <div class="p-4 bg-white/80 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400" aria-hidden="true">
+                <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path>
+                <path d="M10 2c1 .5 2 2 2 5"></path>
+              </svg>
+            </div>
+            <p class="text-lg font-medium text-gray-600">上传餐食图片或文字描述开始吧</p>
+            <p class="text-sm mt-2 text-gray-400">我会帮您分析营养并累计今日摄入</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 输入区（与私厨一致） -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 p-4">
+      <div class="max-w-4xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/50">
+        <div id="imagePreviewWrap" class="hidden px-4 pt-4">
+          <div class="relative inline-block">
+            <img id="preview" alt="预览" class="max-w-24 max-h-24 rounded-lg object-cover shadow-sm" />
+            <button id="removeImage" type="button" class="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors" aria-label="移除图片">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="border-t border-gray-200/50 bg-white/80 p-4">
+          <div class="flex gap-2 items-center">
+            <button id="pickImage" type="button" class="p-2.5 text-gray-500 hover:text-orange-500 hover:bg-orange-50 rounded-xl transition-colors" aria-label="上传图片">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <circle cx="9" cy="9" r="2"></circle>
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+              </svg>
+            </button>
+            <input type="file" id="fileInput" accept="image/*" class="hidden" />
+            <textarea id="input" placeholder="描述你的餐食，例如：200g鸡胸肉、一碗米饭..." class="flex-1 bg-gray-100/80 border-0 rounded-2xl px-4 py-2.5 resize-none focus:outline-none focus:ring-2 focus:ring-orange-300 focus:bg-white transition-all" rows="1"></textarea>
+            <button id="send" type="button" disabled class="p-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl hover:from-orange-600 hover:to-red-600 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg" aria-label="发送">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+                <path d="m21.854 2.147-10.94 10.939"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const API_STREAM = "/api/v1/nutrition/stream";
+    const API_MESSAGES = "/api/v1/nutrition/messages";
+    const API_OSS = "/api/v1/oss/presign";
+
+    const today = new Date().toISOString().slice(0, 10);
+    let threadId = localStorage.getItem("nutrition_thread_id") || `nutrition-${today}`;
+    let imageUrl = "";
+    let pendingFile = null;
+    let sending = false;
+
+    const messagesEl = document.getElementById("messages");
+    const emptyState = document.getElementById("emptyState");
+    const inputEl = document.getElementById("input");
+    const sendBtn = document.getElementById("send");
+    const fileInput = document.getElementById("fileInput");
+    const preview = document.getElementById("preview");
+    const imagePreviewWrap = document.getElementById("imagePreviewWrap");
+
+    const userIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+    const botIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>`;
+    const spinIcon = `<svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>`;
+
+    function saveThread() {
+      localStorage.setItem("nutrition_thread_id", threadId);
+    }
+
+    function updateSendButton() {
+      const hasContent = inputEl.value.trim() || imageUrl || pendingFile;
+      sendBtn.disabled = !hasContent || sending;
+    }
+
+    function hideEmpty() {
+      if (emptyState) emptyState.remove();
+    }
+
+    function renderMarkdown(text) {
+      try {
+        return marked.parse(text || "", { breaks: true });
+      } catch {
+        return (text || "").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+      }
+    }
+
+    function createMessageBubble(role, options = {}) {
+      hideEmpty();
+      const isUser = role === "user";
+      const wrap = document.createElement("div");
+      wrap.className = `flex ${isUser ? "justify-end" : "justify-start"} animate-fade-in`;
+
+      const inner = document.createElement("div");
+      inner.className = `flex gap-3 max-w-[85%] ${isUser ? "flex-row-reverse" : ""}`;
+
+      const avatar = document.createElement("div");
+      avatar.className = `flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center shadow-md ${
+        isUser ? "bg-gradient-to-br from-blue-400 to-blue-600" : "bg-gradient-to-br from-orange-400 to-red-500"
+      }`;
+      avatar.innerHTML = options.loading ? spinIcon : (isUser ? userIcon : botIcon);
+
+      const bubble = document.createElement("div");
+      bubble.className = `rounded-2xl px-4 py-3 shadow-sm ${
+        isUser ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white" : "bg-white/90 text-gray-800"
+      }`;
+
+      if (isUser) {
+        if (options.image) {
+          const img = document.createElement("img");
+          img.src = options.image;
+          img.alt = "餐食图片";
+          img.className = "max-w-48 max-h-48 rounded-lg object-cover mb-2";
+          bubble.appendChild(img);
+        }
+        const text = document.createElement("div");
+        text.className = "whitespace-pre-wrap leading-relaxed";
+        text.textContent = options.text || "";
+        if (options.text) bubble.appendChild(text);
+      } else {
+        bubble.className += " prose-chat";
+        bubble.innerHTML = options.html || "";
+      }
+
+      inner.appendChild(avatar);
+      inner.appendChild(bubble);
+      wrap.appendChild(inner);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      return { wrap, bubble, avatar };
+    }
+
+    function formatUserContent(content) {
+      if (typeof content === "string") return { text: content, image: null };
+      if (Array.isArray(content)) {
+        let text = "";
+        let image = null;
+        for (const part of content) {
+          if (part.type === "text") text = part.text;
+          if (part.type === "image") image = part.url || part.image_url;
+        }
+        return { text, image };
+      }
+      return { text: String(content), image: null };
+    }
+
+    async function loadHistory() {
+      const res = await fetch(`${API_MESSAGES}?thread_id=${encodeURIComponent(threadId)}`);
+      const data = await res.json();
+      messagesEl.innerHTML = "";
+      messagesEl.appendChild(emptyState);
+
+      if (!data.messages?.length) {
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      hideEmpty();
+      for (const m of data.messages) {
+        if (m.role === "user") {
+          const { text, image } = formatUserContent(m.content);
+          createMessageBubble("user", { text: text || (image ? "请分析这份餐食的营养" : ""), image });
+        } else {
+          const text = typeof m.content === "string" ? m.content : JSON.stringify(m.content);
+          createMessageBubble("assistant", { html: renderMarkdown(text) });
+        }
+      }
+    }
+
+    async function uploadImage(file) {
+      const filename = `${Date.now()}-${file.name}`;
+      const presignRes = await fetch(`${API_OSS}?filename=${encodeURIComponent(filename)}`);
+      if (!presignRes.ok) throw new Error("获取上传地址失败");
+      const presign = await presignRes.json();
+      const uploadRes = await fetch(presign.uploadUrl, {
+        method: "PUT",
+        headers: { "Content-Type": presign.contentType },
+        body: file,
+      });
+      if (!uploadRes.ok) throw new Error("图片上传失败");
+      return presign.accessUrl;
+    }
+
+    function clearImagePreview() {
+      pendingFile = null;
+      imageUrl = "";
+      preview.src = "";
+      imagePreviewWrap.classList.add("hidden");
+      fileInput.value = "";
+      updateSendButton();
+    }
+
+    async function sendMessage() {
+      const message = inputEl.value.trim();
+      if ((!message && !imageUrl && !pendingFile) || sending) return;
+
+      sending = true;
+      updateSendButton();
+
+      let localPreview = preview.src || null;
+      if (pendingFile && !imageUrl) {
+        try {
+          imageUrl = await uploadImage(pendingFile);
+        } catch (e) {
+          alert("图片上传失败: " + e.message);
+          sending = false;
+          updateSendButton();
+          return;
+        }
+      }
+
+      createMessageBubble("user", {
+        text: message || "请分析这份餐食的热量、蛋白质、碳水化合物、脂肪、膳食纤维和钠含量",
+        image: localPreview,
+      });
+      inputEl.value = "";
+      clearImagePreview();
+
+      const { bubble, avatar } = createMessageBubble("assistant", { html: "", loading: true });
+
+      try {
+        const res = await fetch(API_STREAM, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: message || "请分析这份餐食的热量、蛋白质、碳水化合物、脂肪、膳食纤维和钠含量",
+            image_url: imageUrl || null,
+            thread_id: threadId,
+          }),
+        });
+        if (!res.ok) throw new Error(`请求失败: ${res.status}`);
+
+        imageUrl = "";
+        avatar.innerHTML = botIcon;
+        let fullText = "";
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          fullText += decoder.decode(value, { stream: true });
+          bubble.innerHTML = renderMarkdown(fullText);
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+      } catch (e) {
+        avatar.innerHTML = botIcon;
+        bubble.innerHTML = `<p class="text-red-600">分析失败: ${e.message}</p>`;
+      } finally {
+        sending = false;
+        updateSendButton();
+      }
+    }
+
+    document.getElementById("pickImage").onclick = () => fileInput.click();
+    fileInput.onchange = () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      pendingFile = file;
+      imageUrl = "";
+      preview.src = URL.createObjectURL(file);
+      imagePreviewWrap.classList.remove("hidden");
+      updateSendButton();
+    };
+    document.getElementById("removeImage").onclick = clearImagePreview;
+    sendBtn.onclick = sendMessage;
+    inputEl.addEventListener("input", () => {
+      inputEl.style.height = "auto";
+      inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+      updateSendButton();
+    });
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    document.getElementById("newSession").onclick = async () => {
+      await fetch(`${API_MESSAGES}?thread_id=${encodeURIComponent(threadId)}`, { method: "DELETE" });
+      threadId = `nutrition-${today}-${Date.now()}`;
+      saveThread();
+      messagesEl.innerHTML = "";
+      emptyState.classList.remove("hidden");
+      messagesEl.appendChild(emptyState);
+    };
+
+    saveThread();
+    loadHistory();
+    updateSendButton();
+  </script>
+</body>
+</html>

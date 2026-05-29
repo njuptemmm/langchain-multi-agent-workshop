@@ -1,0 +1,93 @@
+# =========================
+# 敏感信息 / Secrets（切勿提交）
+# =========================
+.env
+.env.*
+!.env.example
+
+# 本地笔记中含 OSS 账号、AccessKey 等，请勿上传
+notebooks/notes.md
+
+# 密钥、证书
+*.pem
+*.key
+*.p12
+credentials.json
+secrets.json
+
+# =========================
+# Python
+# =========================
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# =========================
+# 本地数据 / 会话库
+# =========================
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+resources/*.db
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+# 建议提交前清除 notebook 输出（输出中可能含 API Key）
+# jupyter nbconvert --clear-output --inplace notebooks/**/*.ipynb
+
+# =========================
+# LangGraph / LangSmith 本地
+# =========================
+.langgraph/
+.langgraph_api/
+.langgraph_checkpoint/
+
+# =========================
+# 日志与临时文件
+# =========================
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# =========================
+# IDE / 编辑器
+# =========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.cursor/
+
+# =========================
+# 操作系统
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Node（若后续补充前端源码）
+# =========================
+node_modules/
+.next/
+out/
